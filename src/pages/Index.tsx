@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { ForexRateCard } from "@/components/ForexRateCard";
-import { CurrencyConverter } from "@/components/CurrencyConverter";
-import { SwiftCodeFinder } from "@/components/SwiftCodeFinder";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, Globe } from "lucide-react";
 
 interface ForexRate {
   from: string;
@@ -54,32 +51,34 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+      <header className="border-b border-border bg-card sticky top-0 z-50 shadow-sm">
+        <div className="container mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-8 h-8 text-primary" />
+            <div className="flex items-center gap-3">
+              <Globe className="w-8 h-8 text-primary" />
               <h1 className="text-2xl font-bold text-foreground">ForexHub</h1>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground">Live Rates</span>
-              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+            <div className="flex items-center gap-3 bg-success/10 px-4 py-2 rounded-full">
+              <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
+              <span className="text-sm font-medium text-success">Live Updates</span>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        {/* Live Rates Section */}
+      <main className="container mx-auto px-6 py-12">
+        {/* Hero Section */}
         <section className="mb-12">
-          <div className="flex items-center gap-2 mb-6">
-            <h2 className="text-3xl font-bold text-foreground">Live Forex Rates</h2>
-            <div className="h-6 w-6 relative">
-              <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-20" />
-              <div className="absolute inset-0 bg-primary rounded-full opacity-60" />
-            </div>
+          <div className="mb-8">
+            <h2 className="text-4xl font-bold text-foreground mb-3">
+              Live Forex Rates
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Real-time exchange rates updated every 30 seconds
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {rates.map((rate, index) => (
               <ForexRateCard
                 key={index}
@@ -93,35 +92,13 @@ const Index = () => {
             ))}
           </div>
         </section>
-
-        {/* Tools Section */}
-        <section>
-          <Tabs defaultValue="converter" className="space-y-6">
-            <TabsList className="bg-card border border-border">
-              <TabsTrigger value="converter" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                Currency Converter
-              </TabsTrigger>
-              <TabsTrigger value="swift" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                SWIFT Code Finder
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="converter" className="mt-6">
-              <CurrencyConverter />
-            </TabsContent>
-            
-            <TabsContent value="swift" className="mt-6">
-              <SwiftCodeFinder />
-            </TabsContent>
-          </Tabs>
-        </section>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card/50 mt-16">
-        <div className="container mx-auto px-4 py-6">
+      <footer className="border-t border-border bg-card mt-20">
+        <div className="container mx-auto px-6 py-8">
           <p className="text-center text-sm text-muted-foreground">
-            Real-time forex rates powered by ExchangeRate-API • Updates every 30 seconds
+            Powered by ExchangeRate-API • Real-time forex data
           </p>
         </div>
       </footer>

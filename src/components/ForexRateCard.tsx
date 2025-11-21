@@ -21,29 +21,27 @@ export const ForexRateCard = ({
   const isPositive = change >= 0;
 
   return (
-    <Card className="p-4 bg-card border-border hover:border-primary/50 transition-all cursor-pointer group">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">{fromFlag}</span>
-          <span className="text-sm text-muted-foreground">→</span>
-          <span className="text-2xl">{toFlag}</span>
+    <Card className="p-6 bg-card border-border hover:shadow-lg transition-all duration-300">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <span className="text-3xl">{fromFlag}</span>
+          <span className="text-xl text-muted-foreground">→</span>
+          <span className="text-3xl">{toFlag}</span>
         </div>
-        <div className={`flex items-center gap-1 ${isPositive ? "text-success" : "text-destructive"}`}>
+        <div className={`flex items-center gap-1 px-3 py-1 rounded-full ${isPositive ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"}`}>
           {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-        </div>
-      </div>
-      <div className="space-y-1">
-        <div className="flex items-baseline gap-2">
-          <span className="text-lg font-semibold text-foreground">
-            {fromCurrency} to {toCurrency}
+          <span className="text-sm font-semibold">
+            {isPositive ? "+" : ""}{change.toFixed(2)}%
           </span>
         </div>
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold text-foreground">{rate.toFixed(4)}</span>
-          <span className="text-sm text-muted-foreground">{toCurrency}</span>
+      </div>
+      <div className="space-y-2">
+        <div className="text-sm font-medium text-muted-foreground">
+          {fromCurrency} to {toCurrency}
         </div>
-        <div className={`text-sm font-medium ${isPositive ? "text-success" : "text-destructive"}`}>
-          {isPositive ? "+" : ""}{change.toFixed(2)}%
+        <div className="flex items-baseline gap-2">
+          <span className="text-3xl font-bold text-foreground">{rate.toFixed(4)}</span>
+          <span className="text-base text-muted-foreground">{toCurrency}</span>
         </div>
       </div>
     </Card>
