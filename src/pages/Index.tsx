@@ -15,17 +15,7 @@ interface ForexRate {
 }
 
 const Index = () => {
-  const [rates, setRates] = useState<ForexRate[]>([
-    { from: "USD", to: "INR", rate: 83.12, change: -0.15, fromFlag: "🇺🇸", toFlag: "🇮🇳" },
-    { from: "EUR", to: "INR", rate: 89.45, change: 0.23, fromFlag: "🇪🇺", toFlag: "🇮🇳" },
-    { from: "GBP", to: "INR", rate: 105.67, change: 0.41, fromFlag: "🇬🇧", toFlag: "🇮🇳" },
-    { from: "JPY", to: "INR", rate: 0.56, change: -0.08, fromFlag: "🇯🇵", toFlag: "🇮🇳" },
-    { from: "USD", to: "EUR", rate: 0.93, change: 0.12, fromFlag: "🇺🇸", toFlag: "🇪🇺" },
-    { from: "USD", to: "GBP", rate: 0.79, change: -0.05, fromFlag: "🇺🇸", toFlag: "🇬🇧" },
-    { from: "AUD", to: "USD", rate: 0.64, change: 0.18, fromFlag: "🇦🇺", toFlag: "🇺🇸" },
-    { from: "CAD", to: "USD", rate: 0.72, change: -0.11, fromFlag: "🇨🇦", toFlag: "🇺🇸" },
-    { from: "CHF", to: "USD", rate: 1.13, change: 0.09, fromFlag: "🇨🇭", toFlag: "🇺🇸" },
-  ]);
+  const [rates, setRates] = useState<ForexRate[]>([]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [fromFilter, setFromFilter] = useState("all");
@@ -39,17 +29,34 @@ const Index = () => {
         const response = await fetch("https://api.exchangerate-api.com/v4/latest/USD");
         const data = await response.json();
         
-        const updatedRates: ForexRate[] = [
-          { from: "USD", to: "INR", rate: data.rates.INR, change: Math.random() * 0.5 - 0.25, fromFlag: "🇺🇸", toFlag: "🇮🇳" },
-          { from: "EUR", to: "INR", rate: data.rates.INR / data.rates.EUR, change: Math.random() * 0.5 - 0.25, fromFlag: "🇪🇺", toFlag: "🇮🇳" },
-          { from: "GBP", to: "INR", rate: data.rates.INR / data.rates.GBP, change: Math.random() * 0.5 - 0.25, fromFlag: "🇬🇧", toFlag: "🇮🇳" },
-          { from: "JPY", to: "INR", rate: data.rates.INR / data.rates.JPY, change: Math.random() * 0.5 - 0.25, fromFlag: "🇯🇵", toFlag: "🇮🇳" },
-          { from: "USD", to: "EUR", rate: data.rates.EUR, change: Math.random() * 0.5 - 0.25, fromFlag: "🇺🇸", toFlag: "🇪🇺" },
-          { from: "USD", to: "GBP", rate: data.rates.GBP, change: Math.random() * 0.5 - 0.25, fromFlag: "🇺🇸", toFlag: "🇬🇧" },
-          { from: "AUD", to: "USD", rate: data.rates.AUD ? 1 / data.rates.AUD : 0.64, change: Math.random() * 0.5 - 0.25, fromFlag: "🇦🇺", toFlag: "🇺🇸" },
-          { from: "CAD", to: "USD", rate: data.rates.CAD ? 1 / data.rates.CAD : 0.72, change: Math.random() * 0.5 - 0.25, fromFlag: "🇨🇦", toFlag: "🇺🇸" },
-          { from: "CHF", to: "USD", rate: data.rates.CHF ? 1 / data.rates.CHF : 1.13, change: Math.random() * 0.5 - 0.25, fromFlag: "🇨🇭", toFlag: "🇺🇸" },
-        ];
+        const majorCurrencies = ["USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "INR", "CNY", "SGD"];
+        const flags: Record<string, string> = {
+          USD: "🇺🇸", EUR: "🇪🇺", GBP: "🇬🇧", JPY: "🇯🇵", 
+          AUD: "🇦🇺", CAD: "🇨🇦", CHF: "🇨🇭", INR: "🇮🇳",
+          CNY: "🇨🇳", SGD: "🇸🇬"
+        };
+        
+        const updatedRates: ForexRate[] = [];
+        
+        // Generate all combinations of major currency pairs
+        majorCurrencies.forEach(from => {
+          majorCurrencies.forEach(to => {
+            if (from !== to) {
+              const fromRate = data.rates[from] || 1;
+              const toRate = data.rates[to] || 1;
+              const rate = toRate / fromRate;
+              
+              updatedRates.push({
+                from,
+                to,
+                rate,
+                change: Math.random() * 0.5 - 0.25,
+                fromFlag: flags[from] || "🌐",
+                toFlag: flags[to] || "🌐"
+              });
+            }
+          });
+        });
         
         setRates(updatedRates);
       } catch (error) {
